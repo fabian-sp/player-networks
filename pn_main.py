@@ -4,16 +4,16 @@ author: Fabian Schaipp
 
 import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
-import seaborn as sns
+from scipy.stats import zscore
 
 from pn_helper import calculate_network,eps_estimation, clustering,draw_network, get_subgraph_by_cluster
 
-
+"""
+import your matrix with data as an array called X
+rows should be players, columns should be the statistics
+"""
     
-X = pd.DataFrame( zscore(X0), columns = X0.columns, index=X0.index)
-
-S = X[['Total Dribbles', 'Possession Gain',  'Possession Loss' , 'Interception Ratio', 'Total Shots', 'Short Pass Pct', 'Pass Accuracy' , 'Key Pass per Pass']]
+S = pd.DataFrame( zscore(X), columns = X.columns, index=X.index)
 
 #%% sort S after surnames
 fullnames = list(S.index.values)
@@ -38,6 +38,7 @@ clusters = clustering(D , eps = 0.45 , min_samples = min_samples, names = names)
 # names have to have the same order as the node numbering in G!!
 # this is ensured in calculate_network and by sorting S before hand
 draw_network(G, names, clusters, edge_weights, write_labels = False, style = 'kamada')
+
 
 
 # draw network for each sub-cluster

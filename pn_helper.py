@@ -156,3 +156,5 @@ def draw_network(G, names, clusters, edge_weights, write_labels = False, style =
                              width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'white', font_size = 9)
     
     fig.set_facecolor("dimgrey")
+    
+    #plt.savefig('res_network', facecolor=fig.get_facecolor(), transparent=True)
