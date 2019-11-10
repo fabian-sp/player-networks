@@ -12,6 +12,7 @@ from pn_helper import calculate_network,eps_estimation, clustering,draw_network,
 import your matrix with data as an array called X
 rows should be players, columns should be the statistics
 """
+X = pd.DataFrame()
     
 S = pd.DataFrame( zscore(X), columns = X.columns, index=X.index)
 
