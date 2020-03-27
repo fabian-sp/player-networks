@@ -13,14 +13,11 @@ A Graph object `G` is then derived. The standard metric we used is `cosine`. The
 
 Below you see the result for a dataset of central midfielders of the season 2018/19.<br>
 
-Complete network:
-![](docu/res_network.png | width=100)
+Complete network:<br>
+<img src="docu/res_network.png" width="500">
 
-Cluster 1:
-![](docu/cluster1.png | width=100)
-
-
-[pic2]: docu/cluster1.png "Cluster1" 
+Cluster 1:<br>
+<img src="docu/cluster1.png" width="500">
 
 ## Interpretation of the network
 Players that are connected by an edge are similar in playing style. The edge color represents the strength of the connection. The whiter an edge, the more similar are the players. <br>
