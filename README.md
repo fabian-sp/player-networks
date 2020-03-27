@@ -15,11 +15,11 @@ Below you see the result for a dataset of central midfielders of the season 2018
 
 ![alt text][logo]
 
-[logo]: res_network.png "Resulting player network"
+[logo]: docu/res_network.png "Resulting player network"
 
 ![alt text][logo]
 
-[logo]: cluster1.png "Cluster1" 
+[logo]: docu/cluster1.png "Cluster1" 
 
 ## Interpretation of the network
 Players that are connected by an edge are similar in playing style. The edge color represents the strength of the connection. The whiter an edge, the more similar are the players. <br>
