@@ -118,7 +118,7 @@ def plot_heatmap(D):
     # Define two rows for subplots
     fig, (ax, cax) = plt.subplots(nrows=2, figsize=(15,6),  gridspec_kw={"height_ratios":[1,0.05]})
        
-    sns.heatmap(D.T, ax = ax , square = True, cbar=False, xticklabels = D.index.values ,
+    sns.heatmap(D.T, ax = ax , square = False, cbar=False, xticklabels = D.index.values ,
                     linecolor = 'white',
                     cmap= sns.color_palette("YlGnBu", 100),
                     cbar_kws = dict(use_gridspec=False,location="bottom"))
