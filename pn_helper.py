@@ -87,7 +87,7 @@ def clustering(D , eps , min_samples, names):
 
 def eps_estimation(D, min_samples , metric):
     
-    nbrs_eps = NearestNeighbors(n_neighbors= min_samples ,  metric = metric).fit(D)
+    nbrs_eps = NearestNeighbors(n_neighbors= min_samples ,  metric = "precomputed").fit(D)
     distances_eps, _ = nbrs_eps.kneighbors(D)
 
     sns.set_style("dark")
@@ -149,11 +149,11 @@ def draw_network(G, names, clusters, edge_weights, write_labels = False, style =
     if  style == 'kamada':
         nx.draw_kamada_kawai(G, labels = label_dict, with_labels= write_labels,ax = ax, node_size = 70, node_color =  clusters,
                              cmap = my_cmap, vmin = -1, vmax = 1.5,
-                             width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'white', font_size = 9)
+                             width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
     else :
         nx.draw_spring(G, labels = label_dict, with_labels= write_labels,ax = ax, node_size = 70, node_color =  clusters,
                              cmap = my_cmap, vmin = -1, vmax = 1.5,
-                             width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'white', font_size = 9)
+                             width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
     
     fig.set_facecolor("dimgrey")
     

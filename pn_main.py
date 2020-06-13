@@ -20,17 +20,33 @@ def import_fbref_data():
     defensive = pd.read_csv('fbref/defensive.csv', index_col = 0)
     leagues = defensive.reindex(columns=['Squad', 'Comp']).set_index('Squad')
     defensive = defensive.drop(columns = ['Comp','# Pl']).set_index('Squad')
+    defensive.columns = ['def_' + c for c in defensive.columns]
     
     passes = pd.read_csv('fbref/passes.csv', index_col = 0)
     passes = passes.drop(columns = ['Comp','# Pl']).set_index('Squad')
+    passes.columns = ['pass_' + c for c in passes.columns]
     
     possession = pd.read_csv('fbref/possession.csv', index_col = 0)
     possession = possession.drop(columns = ['Comp','# Pl']).set_index('Squad')
+    possession.columns = ['poss_' + c for c in possession.columns]
     
     shots = pd.read_csv('fbref/shots.csv', index_col = 0)
     shots = shots.drop(columns = ['Comp','# Pl']).set_index('Squad')
+    shots.columns = ['shot_' + c for c in shots.columns]
     
     X = pd.concat([defensive, passes, possession, shots], axis = 1)
+    
+    
+    pass_cols = ['pass_' + j for j in ['Cmp%_tot', 'TotDist_tot', 'PrgDist_tot', 'CrsPA']]
+    shot_cols = ['shot_' + j for j in ['G/Sh', 'Sh/90']]
+    possession_cols = ['poss_' + j for j in ['Att', 'Carries_PrgDist', 'Dispos']]
+    defensive_cols = ['def_' + j for j in ['Def 3rd', 'Mid 3rd', 'Att 3rd', 'Int', 'Clr']]
+    
+    all_cols = pass_cols + shot_cols + possession_cols + defensive_cols
+    
+    assert all([c in X.columns for c in all_cols])
+    
+    X = X.reindex(columns = all_cols)
     
     return X
     
@@ -38,7 +54,7 @@ def import_fbref_data():
 X = import_fbref_data()
 
 corr = np.corrcoef(X.T)
-sns.heatmap(corr, xticklabels = X.columns, yticklabels = X.columns)
+sns.heatmap(corr, cmap = "coolwarm", xticklabels = X.columns, yticklabels = X.columns)
 
 S = pd.DataFrame( zscore(X), columns = X.columns, index=X.index)
 
@@ -66,7 +82,7 @@ min_samples = 2 * len(S.columns)
 eps_estimation(D, min_samples , metric)
 
 # set epsilon to where the kink/elbow lies in the graph above
-eps = 0.1
+eps = 0.61
 
 clusters = clustering(D , eps = eps , min_samples = min_samples, names = names)
     
