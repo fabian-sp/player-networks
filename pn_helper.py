@@ -11,6 +11,8 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import DBSCAN
 from sklearn import metrics
 
+from sklearn.decomposition import PCA
+
 
 
 def calculate_network(S, method = 'nearest neighbors' , metric = 'cosine', gamma = None, k = None ):
@@ -114,13 +116,18 @@ def get_subgraph_by_cluster(G, clusters, single_cluster):
             
     return G1, edge_subset
 #%%
-def plot_heatmap(D):
+plt.style.use('dark_background')
+
+def plot_heatmap(D, save = False):
+    
     # Define two rows for subplots
     fig, (ax, cax) = plt.subplots(nrows=2, figsize=(15,6),  gridspec_kw={"height_ratios":[1,0.05]})
-       
+    
+    #sns.color_palette("YlGnBu", 100)
+    my_cmap = plt.cm.coolwarm
     sns.heatmap(D.T, ax = ax , square = False, cbar=False, xticklabels = D.index.values ,
                     linecolor = 'white',
-                    cmap= sns.color_palette("YlGnBu", 100),
+                    cmap= my_cmap,
                     cbar_kws = dict(use_gridspec=False,location="bottom"))
     
     ax.xaxis.label.set_color('white')
@@ -131,13 +138,16 @@ def plot_heatmap(D):
         
     cax.set_title('Color legend: standardized value of statistic', color = 'white')
     cax.tick_params(axis='x', colors='white')
-    fig.set_facecolor("dimgrey")
+    #fig.set_facecolor("dimgrey")
     
-    fig.subplots_adjust( left=0.14, right=0.95, hspace=0.7, wspace=0.2)
+    fig.subplots_adjust( left=0.14, right=0.95, hspace=0.85, wspace=0.5)
+    
+    if save:
+        plt.savefig('res_heatmap', facecolor=fig.get_facecolor(), transparent=True)
     
     return
 
-def draw_network(G, names, clusters, edge_weights, write_labels = False, style = 'kamada'):
+def draw_network(G, S, names, clusters, edge_weights, write_labels = False, style = 'kamada', save = False):
     fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10,8))
     
     keys = list(G.nodes)
@@ -150,11 +160,23 @@ def draw_network(G, names, clusters, edge_weights, write_labels = False, style =
         nx.draw_kamada_kawai(G, labels = label_dict, with_labels= write_labels,ax = ax, node_size = 70, node_color =  clusters,
                              cmap = my_cmap, vmin = -1, vmax = 1.5,
                              width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
+    elif style == 'PCA':
+        tmp = PCA(n_components = 2).fit_transform(S)
+        pos_dict = dict(zip(keys,tmp))
+        
+        nx.draw_networkx(G, pos = pos_dict, labels = label_dict, with_labels= write_labels,ax = ax, node_size = 70, node_color =  clusters,
+                             cmap = my_cmap, vmin = -1, vmax = 1.5,
+                             width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
+        
     else :
         nx.draw_spring(G, labels = label_dict, with_labels= write_labels,ax = ax, node_size = 70, node_color =  clusters,
                              cmap = my_cmap, vmin = -1, vmax = 1.5,
                              width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
+    ax.axis('off')
+    fig.set_facecolor("dimgray")
     
-    fig.set_facecolor("dimgrey")
-    
-    #plt.savefig('res_network', facecolor=fig.get_facecolor(), transparent=True)
+    if save:
+        name = '-'.join([str(c) for c in np.unique(clusters)])
+        plt.savefig(f'res_network_{name}', facecolor=fig.get_facecolor(), transparent=True)
+        
+    return

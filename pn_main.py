@@ -88,15 +88,16 @@ clusters = clustering(D , eps = eps , min_samples = min_samples, names = names)
     
 # names have to have the same order as the node numbering in G!!
 # this is ensured in calculate_network and by sorting S before hand
-draw_network(G, names, clusters, edge_weights, write_labels = True, style = 'kamada')
+draw_network(G, S, names, clusters, edge_weights, write_labels = True, style = 'kamada', save = True)
 
 
 # draw network for each sub-cluster
 for c in np.unique(clusters):
-    
+        
     G1, edge_subset = get_subgraph_by_cluster(G, clusters, single_cluster = c)
-    draw_network(G1, names, clusters.values[G1.nodes], edge_weights[edge_subset], write_labels = True, style = 'kamada')
+    draw_network(G1, S.values[list(G1.nodes)], names, clusters.values[G1.nodes], edge_weights[edge_subset], write_labels = True, style = 'kamada',\
+                 save = True)
 
   
 
-plot_heatmap(S)
+plot_heatmap(S, save = True)
