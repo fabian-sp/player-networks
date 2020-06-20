@@ -143,12 +143,12 @@ def plot_heatmap(D, save = False):
     fig.subplots_adjust( left=0.14, right=0.95, hspace=0.85, wspace=0.5)
     
     if save:
-        plt.savefig('res_heatmap', facecolor=fig.get_facecolor(), transparent=True)
+        plt.savefig('res_heatmap', facecolor=fig.get_facecolor(), transparent=True, dpi = 400)
     
     return
 
 def draw_network(G, S, names, clusters, edge_weights, write_labels = False, style = 'kamada', save = False):
-    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(10,8))
+    fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(15,8))
     
     keys = list(G.nodes)
     sub_names = list(np.array(names)[keys])
@@ -174,9 +174,10 @@ def draw_network(G, S, names, clusters, edge_weights, write_labels = False, styl
                              width = 2, edge_color = edge_weights, edge_cmap = plt.cm.binary_r, edge_vmin = 0.8, edge_vmax = 1.5, alpha = 1, font_color = 'whitesmoke', font_size = 9)
     ax.axis('off')
     fig.set_facecolor("dimgray")
+    fig.tight_layout()
     
     if save:
         name = '-'.join([str(c) for c in np.unique(clusters)])
-        plt.savefig(f'res_network_{name}', facecolor=fig.get_facecolor(), transparent=True)
+        plt.savefig(f'res_network_{name}', facecolor=fig.get_facecolor(), transparent=True, dpi = 400)
         
     return
